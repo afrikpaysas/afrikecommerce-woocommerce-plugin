@@ -22,7 +22,7 @@ class WC_Gateway_PAYPAL_Request {
 	protected $gateway;
 
 	/**
-	 * Endpoint for requests frpaypal Afrikpay.
+	 * Endpoint for requests from Afrikpay.
 	 * @var string
 	 */
 	protected $notify_url;
@@ -48,7 +48,7 @@ class WC_Gateway_PAYPAL_Request {
 		WC_Gateway_PAYPAL::log( 'Afrikpay Request Args for order ' . $order->get_order_number() . ': ' . wc_print_r( $afrikpay_args, true ) );
 
 		if ( $sandbox ) {
-			return 'https://www.sandbox.afrikpay.cpaypal/cgi-bin/webscr?test_ipn=1&' . $afrikpay_args;
+			return 'https://www.sandbox.afrikpay.com/cgi-bin/webscr?test_ipn=1&' . $afrikpay_args;
 		} else {
 			return wc_get_checkout_url().'?&' . $afrikpay_args;
 		}
@@ -76,12 +76,12 @@ class WC_Gateway_PAYPAL_Request {
 	protected function get_afrikpay_args( $order ) {
 		WC_Gateway_PAYPAL::log( 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
 
-		return apply_filters( 'woocpaypalmerce_afrikpay_args', array_merge(
+		return apply_filters( 'woocommerce_afrikpay_args', array_merge(
 			array(
 				'cmd'           => '_cart',
 				'business'      => $this->gateway->get_option( 'email' ),
 				'no_note'       => 1,
-				'currency_code' => get_woocpaypalmerce_currency(),
+				'currency_code' => get_woocommerce_currency(),
 				'charset'       => 'utf-8',
 				'rm'            => is_ssl() ? 2 : 1,
 				'upload'        => 1,
@@ -92,7 +92,7 @@ class WC_Gateway_PAYPAL_Request {
 				'paymentaction' => $this->gateway->get_option( 'paymentaction' ),
 				'bn'            => 'WooThemes_Cart',
 				'invoice'       => $this->limit_length( $this->gateway->get_option( 'invoice_prefix' ) . $order->get_order_number(), 127 ),
-				'custpaypal'        => json_encode( array( 'order_id' => $order->get_id(), 'order_key' => $order->get_order_key() ) ),
+				'custom'        => json_encode( array( 'order_id' => $order->get_id(), 'order_key' => $order->get_order_key() ) ),
 				'notify_url'    => $this->limit_length( $this->notify_url, 255 ),
 				'first_name'    => $this->limit_length( $order->get_billing_first_name(), 32 ),
 				'last_name'     => $this->limit_length( $order->get_billing_last_name(), 64 ),
@@ -236,7 +236,7 @@ class WC_Gateway_PAYPAL_Request {
 			if ( $order->get_shipping_total() > 0 && $order->get_shipping_total() < 999.99 && $this->number_format( $order->get_shipping_total() + $order->get_shipping_tax(), $order ) !== $this->number_format( $order->get_total(), $order ) ) {
 				$line_item_args['shipping_1'] = $this->number_format( $order->get_shipping_total(), $order );
 			} elseif ( $order->get_shipping_total() > 0 ) {
-				$this->add_line_item( sprintf( __( 'Shipping via %s', 'woocpaypalmerce' ), $order->get_shipping_method() ), 1, $this->number_format( $order->get_shipping_total(), $order ) );
+				$this->add_line_item( sprintf( __( 'Shipping via %s', 'woocommerce' ), $order->get_shipping_method() ), 1, $this->number_format( $order->get_shipping_total(), $order ) );
 			}
 
 			$line_item_args = array_merge( $line_item_args, $this->get_line_items() );
@@ -252,7 +252,7 @@ class WC_Gateway_PAYPAL_Request {
 
 			$line_item_args = array();
 			$all_items_name = $this->get_order_item_names( $order );
-			$this->add_line_item( $all_items_name ? $all_items_name : __( 'Order', 'woocpaypalmerce' ), 1, $this->number_format( $order->get_total() - $this->round( $order->get_shipping_total() + $order->get_shipping_tax(), $order ), $order ), $order->get_order_number() );
+			$this->add_line_item( $all_items_name ? $all_items_name : __( 'Order', 'woocommerce' ), 1, $this->number_format( $order->get_total() - $this->round( $order->get_shipping_total() + $order->get_shipping_tax(), $order ), $order ), $order->get_order_number() );
 
 			// Add shipping costs. Afrikpay ignores anything over 5 digits (999.99 is the max).
 			// We also check that shipping is not the **only** cost as Afrikpay won't allow payment
@@ -260,7 +260,7 @@ class WC_Gateway_PAYPAL_Request {
 			if ( $order->get_shipping_total() > 0 && $order->get_shipping_total() < 999.99 && $this->number_format( $order->get_shipping_total() + $order->get_shipping_tax(), $order ) !== $this->number_format( $order->get_total(), $order ) ) {
 				$line_item_args['shipping_1'] = $this->number_format( $order->get_shipping_total() + $order->get_shipping_tax(), $order );
 			} elseif ( $order->get_shipping_total() > 0 ) {
-				$this->add_line_item( sprintf( __( 'Shipping via %s', 'woocpaypalmerce' ), $order->get_shipping_method() ), 1, $this->number_format( $order->get_shipping_total() + $order->get_shipping_tax(), $order ) );
+				$this->add_line_item( sprintf( __( 'Shipping via %s', 'woocommerce' ), $order->get_shipping_method() ), 1, $this->number_format( $order->get_shipping_total() + $order->get_shipping_tax(), $order ) );
 			}
 
 			$line_item_args = array_merge( $line_item_args, $this->get_line_items() );
@@ -294,7 +294,7 @@ class WC_Gateway_PAYPAL_Request {
 			$item_names[] = $item_name . ' x ' . $item->get_quantity();
 		}
 
-		return apply_filters( 'woocpaypalmerce_paypal_get_order_item_names', implode( ', ', $item_names ), $order );
+		return apply_filters( 'woocommerce_paypal_get_order_item_names', implode( ', ', $item_names ), $order );
 	}
 
 	/**
@@ -317,7 +317,7 @@ class WC_Gateway_PAYPAL_Request {
 			$item_name .= ' (' . $item_meta . ')';
 		}
 
-		return apply_filters( 'woocpaypalmerce_paypal_get_order_item_name', $item_name, $order, $item );
+		return apply_filters( 'woocommerce_paypal_get_order_item_name', $item_name, $order, $item );
 	}
 
 	/**
@@ -385,8 +385,8 @@ class WC_Gateway_PAYPAL_Request {
 			return false;
 		}
 
-		$item = apply_filters( 'woocpaypalmerce_paypal_line_item', array(
-			'item_name'   => html_entity_decode( wc_trim_string( $item_name ? $item_name : __( 'Item', 'woocpaypalmerce' ), 127 ), ENT_NOQUOTES, 'UTF-8' ),
+		$item = apply_filters( 'woocommerce_paypal_line_item', array(
+			'item_name'   => html_entity_decode( wc_trim_string( $item_name ? $item_name : __( 'Item', 'woocommerce' ), 127 ), ENT_NOQUOTES, 'UTF-8' ),
 			'quantity'    => (int) $quantity,
 			'amount'      => wc_float_to_string( (float) $amount ),
 			'item_number' => $item_number,

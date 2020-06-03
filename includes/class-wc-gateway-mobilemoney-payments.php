@@ -164,7 +164,7 @@ class WC_Gateway_MOMO extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/mobilemoney-payments-for-woocommerce/assets/images/mobile-money.png' );
+				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/images/mobile-money.png' );
 			break;
 		}
 		return apply_filters( 'woocommerce_mobilemoney_icon', $icon );
@@ -280,7 +280,7 @@ if(isset($_GET["status"])) {
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'woocommerce_mobilemoney_admin', '../wp-content/plugins/mobilemoney-payments-for-woocommerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
+		wp_enqueue_script( 'woocommerce_mobilemoney_admin', '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
 	}
 }
 }

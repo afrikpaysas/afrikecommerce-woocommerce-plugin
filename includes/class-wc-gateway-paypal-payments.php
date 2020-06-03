@@ -9,10 +9,10 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {}
 <input type="hidden" name="provider" value="orange_money_cm"/>
 <input type="hidden" name="store" value="<?php echo $_GET["store"]; ?>" />
 <input type="hidden" name="brand" value="Mon Panier" />
-<input type="hidden" name="currency" value="<?php echo get_woocpaypalmerce_currency(); ?>" /> 
+<input type="hidden" name="currency" value="<?php echo get_woocommerce_currency(); ?>" /> 
 <input type="hidden" name="amount" value="<?php echo $_GET["totalamount"] ?>" />
 <input type="hidden" name="phonenumber" value="" />
-<input type="hidden" name="purchaseref" value="<?php $json = json_decode($_GET["custpaypal"], true); echo $json['order_id']; ?>" />
+<input type="hidden" name="purchaseref" value="<?php $json = json_decode($_GET["custom"], true); echo $json['order_id']; ?>" />
 <input type="hidden" name="notifurl" value="<?php echo $_GET["notify_url"]; ?>" />
 <input type="hidden" name="accepturl" value="<?php echo $_GET["return"]; ?>" />
 <input type="hidden" name="cancelurl" value="<?php echo $_GET["cancel_return"]; ?>" />
@@ -46,9 +46,9 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = 'paypal';
 		$this->has_fields         = false;
-		$this->order_button_text  = __( 'Payer avec Orange Money', 'woocpaypalmerce' );
-		$this->method_title       = __( 'Orange Money', 'woocpaypalmerce' );
-		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec Orange Money', 'woocpaypalmerce' ), admin_url( 'admin.php?page=wc-status' ) );
+		$this->order_button_text  = __( 'Payer avec Orange Money', 'woocommerce' );
+		$this->method_title       = __( 'Orange Money', 'woocommerce' );
+		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec Orange Money', 'woocommerce' ), admin_url( 'admin.php?page=wc-status' ) );
 		$this->supports           = array(
 			'products',
 			'refunds',
@@ -70,11 +70,11 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 		self::$log_enabled    = $this->debug;
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		add_action( 'woocpaypalmerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'woocpaypalmerce_order_status_on-hold_to_processing', array( $this, 'capture_payment' ) );
-		add_action( 'woocpaypalmerce_order_status_on-hold_to_cpaypalpleted', array( $this, 'capture_payment' ) );
+		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_order_status_on-hold_to_processing', array( $this, 'capture_payment' ) );
+		add_action( 'woocommerce_order_status_on-hold_to_completed', array( $this, 'capture_payment' ) );
 
-        add_action('woocpaypalmerce_api_wc_gateway_paypal', [$this, 'pay']);
+        add_action('woocommerce_api_wc_gateway_paypal', [$this, 'pay']);
                 
 
 		if ( ! $this->is_valid_for_use() ) {
@@ -108,14 +108,14 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
         $status = $_GET["status"];
         switch ( $status ) {
 			case 'OK' :
-				$order->add_order_note( sprintf( __( "Le paiement s'est bien pass\E9: %1$s", 'woocpaypalmerce' ), $status ) );
+				$order->add_order_note( sprintf( __( "Le paiement s'est bien pass\E9: %1$s", 'woocommerce' ), $status ) );
 				update_post_meta( $order->get_id(), '_mobilemoney_status', $status );
 				update_post_meta( $order->get_id(), '_transaction_id', $status );
-				$order->payment_cpaypalplete();
+				$order->payment_complete();
 				header('Location: '.$this->get_return_url( $order ));
 			break;
 			default :
-				$order->add_order_note( sprintf( __( "Le paiement ne s'est pas bien pass\E9: %1$s", 'woocpaypalmerce' ), $status ) );
+				$order->add_order_note( sprintf( __( "Le paiement ne s'est pas bien pass\E9: %1$s", 'woocommerce' ), $status ) );
 				header('Location: '.esc_url_raw( $order->get_cancel_order_url_raw()));
 			break;
 				
@@ -131,27 +131,27 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 		$icon      = (array) $this->get_icon_image( WC()->countries->get_base_country() );
 
 		foreach ( $icon as $i ) {
-			$icon_html .= '<img src="' . esc_attr( $i ) . '" alt="' . esc_attr__( 'Afrikpay acceptance mark', 'woocpaypalmerce' ) . '" />';
+			$icon_html .= '<img src="' . esc_attr( $i ) . '" alt="' . esc_attr__( 'Afrikpay acceptance mark', 'woocommerce' ) . '" />';
 		}
 
 		$icon_html .= sprintf( '', esc_url( $this->get_icon_url( WC()->countries->get_base_country() ) ) );
 
-		return apply_filters( 'woocpaypalmerce_gateway_icon', $icon_html, $this->id );
+		return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 	}
 
 	
 
 	protected function get_icon_url( $country ) {
-		$url           = 'https://www.afrikpay.cpaypal/' . strtolower( $country );
-		$hpaypale_counties = array( 'BE', 'CZ', 'DK', 'HU', 'IT', 'JP', 'NL', 'NO', 'ES', 'SE', 'TR', 'IN' );
-		$countries     = array( 'DZ', 'AU', 'BH', 'BQ', 'BW', 'CA', 'CN', 'CW', 'FI', 'FR', 'DE', 'GR', 'HK', 'ID', 'JO', 'KE', 'KW', 'LU', 'MY', 'MA', 'PAYPAL', 'PH', 'PL', 'PT', 'QA', 'IE', 'RU', 'BL', 'SX', 'MF', 'SA', 'SG', 'SK', 'KR', 'SS', 'TW', 'TH', 'AE', 'GB', 'US', 'VN' );
+		$url           = 'https://www.afrikpay.com/' . strtolower( $country );
+		$home_counties = array( 'BE', 'CZ', 'DK', 'HU', 'IT', 'JP', 'NL', 'NO', 'ES', 'SE', 'TR', 'IN' );
+		$countries     = array( 'DZ', 'AU', 'BH', 'BQ', 'BW', 'CA', 'CN', 'CW', 'FI', 'FR', 'DE', 'GR', 'HK', 'ID', 'JO', 'KE', 'KW', 'LU', 'MY', 'MA', 'OM', 'PH', 'PL', 'PT', 'QA', 'IE', 'RU', 'BL', 'SX', 'MF', 'SA', 'SG', 'SK', 'KR', 'SS', 'TW', 'TH', 'AE', 'GB', 'US', 'VN' );
 
-		if ( in_array( $country, $hpaypale_counties ) ) {
-			return  $url . '/webapps/mpp/hpaypale';
+		if ( in_array( $country, $home_counties ) ) {
+			return  $url . '/webapps/mpp/home';
 		} elseif ( in_array( $country, $countries ) ) {
 			return $url . '/webapps/mpp/afrikpay-popup';
 		} else {
-			return "https://www.afrikpay.cpaypal/";
+			return "https://www.afrikpay.com/";
 		}
 	}
 
@@ -164,10 +164,10 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/paypal-payments-for-woocpaypalmerce/assets/images/orange-money.png' );
+				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/images/paypal.png' );
 			break;
 		}
-		return apply_filters( 'woocpaypalmerce_paypal_icon', $icon );
+		return apply_filters( 'woocommerce_paypal_icon', $icon );
 	}
 
 	/**
@@ -175,7 +175,7 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_valid_for_use() {
-		return in_array( get_woocpaypalmerce_currency(), apply_filters( 'woocpaypalmerce_paypal_supported_currencies', array( 'XAF' ) ) );
+		return in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_paypal_supported_currencies', array( 'XAF' ) ) );
 	}
 
 	/**
@@ -189,7 +189,7 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 			parent::admin_options();
 		} else {
 			?>
-			<div class="inline error"><p><strong><?php _e( 'Gateway disabled', 'woocpaypalmerce' ); ?></strong>: <?php _e( 'Afrikpay does not support your store currency.', 'woocpaypalmerce' ); ?></p></div>
+			<div class="inline error"><p><strong><?php _e( 'Gateway disabled', 'woocommerce' ); ?></strong>: <?php _e( 'Afrikpay does not support your store currency.', 'woocommerce' ); ?></p></div>
 			<?php
 		}
 	}
@@ -221,11 +221,11 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 		include_once( 'class-wc-gateway-paypal-request.php' );
 
 		$order          = wc_get_order( $order_id );
-		$mpaypalo_request = new WC_Gateway_PAYPAL_Request( $this );
+		$paypal_request = new WC_Gateway_PAYPAL_Request( $this );
 
 		return array(
 			'result'   => 'success',
-			'redirect' => $mpaypalo_request->get_request_url( $order ),
+			'redirect' => $paypal_request->get_request_url( $order ),
 		);
 	}
 
@@ -239,7 +239,7 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Capture payment when the order is changed frpaypal on-hold to cpaypalplete or processing
+	 * Capture payment when the order is changed from on-hold to complete or processing
 	 *
 	 * @param  int $order_id
 	 */
@@ -270,12 +270,12 @@ $error=$_GET["error"];
 			if ( ! empty( $status ) ) {
 				switch ( $status ) {
 					case 'OK' :
-						$order->add_order_note( sprintf( __( "Le paiement s'est bien pass\E9: %1$s", 'woocpaypalmerce' ), $status ) );
+						$order->add_order_note( sprintf( __( "Le paiement s'est bien pass\E9: %1$s", 'woocommerce' ), $status ) );
 						update_post_meta( $order->get_id(), '_paypal_status', $status );
 						update_post_meta( $order->get_id(), '_transaction_id', $status );
 					break;
 					default :
-						$order->add_order_note( sprintf( __( "Le paiement ne s'est pas bien pass\E9: %1$s", 'woocpaypalmerce' ), $status ) );
+						$order->add_order_note( sprintf( __( "Le paiement ne s'est pas bien pass\E9: %1$s", 'woocommerce' ), $status ) );
 					break;
 				
 			}
@@ -291,13 +291,13 @@ $error=$_GET["error"];
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id: '';
 
-		if ( 'woocpaypalmerce_page_wc-settings' !== $screen_id ) {
+		if ( 'woocommerce_page_wc-settings' !== $screen_id ) {
 			return;
 		}
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'woocpaypalmerce_paypal_admin', '../wp-content/plugins/paypal-payments-for-woocpaypalmerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
+		wp_enqueue_script( 'woocommerce_paypal_admin', '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
 	}
 }
 }
