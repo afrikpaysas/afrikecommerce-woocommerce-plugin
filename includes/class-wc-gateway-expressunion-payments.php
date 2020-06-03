@@ -280,7 +280,7 @@ if(isset($_GET["status"])) {
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'woocommerce_expressunion_admin', '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
+		wp_enqueue_script( 'woocommerce_expressunion_admin', '../wp-content/plugins/expressunion-payments-for-woocommerce/assets/js/afrikpay-admin' . $suffix . '.js', array(), WC_VERSION, true );
 	}
 }
 }
