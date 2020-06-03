@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Mtn Mobile Money Payments for WooCommerce
+ * Plugin Name: PayPal Payments for WooCommerce
  * Plugin URI: http://afrikpay.com/docs/Afrikpay-payments-woocommerce/
  * Description: Provides Afrikpay Payments as payment method to WooCommerce.
  * Author: Afrikpay
