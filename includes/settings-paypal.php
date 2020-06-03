@@ -11,14 +11,14 @@ return array(
 	'enabled' => array(
 		'title'   => __( 'Enable/Disable', 'woocommerce' ),
 		'type'    => 'checkbox',
-		'label'   => __( 'Enable Mobile Money', 'woocommerce' ),
+		'label'   => __( 'Enable PayPal', 'woocommerce' ),
 		'default' => 'no',
 	),
 	'title' => array(
 		'title'       => __( 'Title', 'woocommerce' ),
 		'type'        => 'text',
 		'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-		'default'     => __( 'Mobile Money', 'woocommerce' ),
+		'default'     => __( 'PayPal', 'woocommerce' ),
 		'desc_tip'    => true,
 	),
 	'description' => array(
