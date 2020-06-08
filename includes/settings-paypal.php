@@ -26,7 +26,7 @@ return array(
 		'type'        => 'text',
 		'desc_tip'    => true,
 		'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce' ),
-		'default'     => __( 'Payer avec Mobile Money;', 'woocommerce' ),
+		'default'     => __( 'Payer avec PayPal;', 'woocommerce' ),
 	),
 	'store' => array(
 		'title'       => __( 'AfrikEcommerce Store Code', 'woocommerce' ),
