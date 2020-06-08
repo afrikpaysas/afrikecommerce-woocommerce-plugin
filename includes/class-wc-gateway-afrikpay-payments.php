@@ -164,7 +164,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/afrikpay-payments-for-woocommerce/assets/images/afrikpay.png' );
+				$icon = WC_HTTPS::force_https_url( 'https://lobbynoir.com/wp-content/uploads/2019/01/FB_IMG_1548460398750.jpg' );
 			break;
 		}
 		return apply_filters( 'woocommerce_afrikpay_icon', $icon );

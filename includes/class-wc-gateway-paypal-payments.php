@@ -164,7 +164,7 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/paypal-payments-for-woocommerce/assets/images/paypal.png' );
+				$icon = WC_HTTPS::force_https_url( 'https://cdn.1min30.com/wp-content/uploads/2017/09/Paypal-logo.jpg' );
 			break;
 		}
 		return apply_filters( 'woocommerce_paypal_icon', $icon );

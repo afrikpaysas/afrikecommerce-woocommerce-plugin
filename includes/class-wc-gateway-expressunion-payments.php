@@ -164,7 +164,7 @@ class WC_Gateway_EU extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/images/eum.png' );
+				$icon = WC_HTTPS::force_https_url( 'https://cloud.afrikpay.com/images/partners/eum.png' );
 			break;
 		}
 		return apply_filters( 'woocommerce_expressunion_icon', $icon );
