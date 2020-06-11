@@ -175,7 +175,7 @@ class WC_Gateway_MOMO extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_valid_for_use() {
-		return in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_mobilemoney_supported_currencies', array( 'XAF' ) ) );
+		return in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_mobilemoney_supported_currencies', array( 'XAF','USD','EUR' ) ) );
 	}
 
 	/**
