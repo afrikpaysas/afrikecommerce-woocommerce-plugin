@@ -131,7 +131,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {
 		$icon      = (array) $this->get_icon_image( WC()->countries->get_base_country() );
 
 		foreach ( $icon as $i ) {
-			$icon_html .= '<img  width="100px" src="' . esc_attr( $i ) . '" alt="' . esc_attr__( 'Afrikpay acceptance mark', 'woocommerce' ) . '" />';
+			$icon_html .= '<img  width="100px" src="' . esc_attr( $i ) . '" alt="' . esc_attr__( '', 'woocommerce' ) . '" />';
 		}
 
 		$icon_html .= sprintf( '', esc_url( $this->get_icon_url( WC()->countries->get_base_country() ) ) );
@@ -164,7 +164,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( 'https://lobbynoir.com/wp-content/uploads/2019/01/FB_IMG_1548460398750.jpg' );
+				$icon = WC_HTTPS::force_https_url( '../assets/images/afrikpay.png' );
 			break;
 		}
 		return apply_filters( 'woocommerce_afrikpay_icon', $icon );
