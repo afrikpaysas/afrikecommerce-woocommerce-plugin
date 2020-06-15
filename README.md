@@ -1,1 +1,1 @@
-# afrikpay-eu-mobile-money-woocommerce-plugin
+# afrikpecommerce-woocommerce-plugin
