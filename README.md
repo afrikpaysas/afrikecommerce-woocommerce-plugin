@@ -1,1 +1,1 @@
-# afrikpecommerce-woocommerce-plugin
+# afrikecommerce-woocommerce-plugin
