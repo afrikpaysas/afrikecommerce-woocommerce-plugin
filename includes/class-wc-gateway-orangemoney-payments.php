@@ -164,7 +164,7 @@ class WC_Gateway_OM extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../assets/images/orange-money.png' );
+				$icon = WC_HTTPS::force_https_url( 'https://cloud.afrikpay.com/images/partners/om.png' );
 			break;
 		}
 		return apply_filters( 'woocommerce_orangemoney_icon', $icon );
