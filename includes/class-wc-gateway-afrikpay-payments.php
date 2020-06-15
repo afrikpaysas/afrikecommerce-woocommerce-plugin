@@ -164,7 +164,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {
 	protected function get_icon_image( $country ) {
 		switch ( $country ) {
 			default :
-				$icon = WC_HTTPS::force_https_url( '../assets/images/afrikpay.png' );
+				$icon = WC_HTTPS::force_https_url( '../wp-content/plugins/afrikecommerce-payments-for-woocommerce/assets/images/afrikpay.png' );
 			break;
 		}
 		return apply_filters( 'woocommerce_afrikpay_icon', $icon );
