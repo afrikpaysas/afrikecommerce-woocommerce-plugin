@@ -107,7 +107,8 @@ class WC_Gateway_EU_Request {
 				'store'    => $this->gateway->get_option( 'store' ),
 				'expressunion'    => true,
 				'totalamount'    =>  $this->getTotalamount($order),
-				'text'            => $this->getText($order)
+				'text'            => $this->getText($order),
+				'language'        => get_locale()
 			),
 			$this->get_phone_number_args( $order ),
 			$this->get_shipping_args( $order ),

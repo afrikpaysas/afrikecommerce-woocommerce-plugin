@@ -18,7 +18,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {}
 <input type="hidden" name="cancelurl" value="<?php echo $_GET["cancel_return"]; ?>" />
 <input type="hidden" name="notifurl" value="<?php echo $_GET["notify_url"]; ?>" />
 <input type="hidden" name="text" value="<?php echo $_GET["text"]; ?>" />
-<input type="hidden" name="language" value="fr" /> 
+<input type="hidden" name="language" value="<?php echo $_GET["language"]; ?>" /> 
 
 </form>
 <script type="text/javascript">
