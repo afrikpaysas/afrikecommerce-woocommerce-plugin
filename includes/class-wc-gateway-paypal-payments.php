@@ -131,7 +131,7 @@ class WC_Gateway_PAYPAL extends WC_Payment_Gateway {
 		$icon      = (array) $this->get_icon_image( WC()->countries->get_base_country() );
 
 		foreach ( $icon as $i ) {
-			$icon_html .= '<img style="width : 50px" src="' . esc_attr( $i ) . '" alt="' . esc_attr__( 'Afrikpay acceptance mark', 'woocommerce' ) . '" />';
+			$icon_html .= '<img style="width : 50px ; height : 50px" src="' . esc_attr( $i ) . '" alt="' . esc_attr__( 'Afrikpay acceptance mark', 'woocommerce' ) . '" />';
 		}
 
 		$icon_html .= sprintf( '', esc_url( $this->get_icon_url( WC()->countries->get_base_country() ) ) );
