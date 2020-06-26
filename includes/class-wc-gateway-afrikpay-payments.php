@@ -107,7 +107,7 @@ class WC_Gateway_Afrikpay extends WC_Payment_Gateway {
         $order = wc_get_order($order_id);
         $status = $_GET["status"];
         switch ( $status ) {
-			case 'OK' :
+			case 'SUCCESS' :
 				$order->add_order_note( sprintf( __( "Le paiement s'est bien pass\E9: %1$s", 'woocommerce' ), $status ) );
 				update_post_meta( $order->get_id(), '_mobilemoney_status', $status );
 				update_post_meta( $order->get_id(), '_transaction_id', $status );
