@@ -5,20 +5,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Settings for PayPal Gateway.
+ * Settings for Master Card Gateway.
  */
 return array(
 	'enabled' => array(
 		'title'   => __( 'Enable/Disable', 'woocommerce' ),
 		'type'    => 'checkbox',
-		'label'   => __( 'Enable PayPal', 'woocommerce' ),
+		'label'   => __( 'Enable Master Card', 'woocommerce' ),
 		'default' => 'no',
 	),
 	'title' => array(
 		'title'       => __( 'Title', 'woocommerce' ),
 		'type'        => 'text',
 		'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-		'default'     => __( 'PayPal', 'woocommerce' ),
+		'default'     => __( 'Master Card', 'woocommerce' ),
 		'desc_tip'    => true,
 	),
 	'description' => array(
@@ -26,7 +26,7 @@ return array(
 		'type'        => 'text',
 		'desc_tip'    => true,
 		'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce' ),
-		'default'     => __( 'Payer avec PayPal;', 'woocommerce' ),
+		'default'     => __( 'Payer avec Master Card;', 'woocommerce' ),
 	),
 	'store' => array(
 		'title'       => __( 'AfrikEcommerce Store Code', 'woocommerce' ),

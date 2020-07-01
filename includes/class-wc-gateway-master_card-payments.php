@@ -46,9 +46,9 @@ class WC_Gateway_MASTER_CARD extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = 'master_card';
 		$this->has_fields         = false;
-		$this->order_button_text  = __( 'Payer avec PayPal', 'woocommerce' );
-		$this->method_title       = __( 'PayPal', 'woocommerce' );
-		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec PayPal', 'woocommerce' ), admin_url( 'admin.php?page=wc-status' ) );
+		$this->order_button_text  = __( 'Payer avec Master Card', 'woocommerce' );
+		$this->method_title       = __( 'Master Card', 'woocommerce' );
+		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec Master Card', 'woocommerce' ), admin_url( 'admin.php?page=wc-status' ) );
 		$this->supports           = array(
 			'products',
 			'refunds',

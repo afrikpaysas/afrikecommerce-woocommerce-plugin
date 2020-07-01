@@ -46,9 +46,9 @@ class WC_Gateway_VISA extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = 'visa';
 		$this->has_fields         = false;
-		$this->order_button_text  = __( 'Payer avec PayPal', 'woocommerce' );
-		$this->method_title       = __( 'PayPal', 'woocommerce' );
-		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec PayPal', 'woocommerce' ), admin_url( 'admin.php?page=wc-status' ) );
+		$this->order_button_text  = __( 'Payer avec Visa', 'woocommerce' );
+		$this->method_title       = __( 'Visa', 'woocommerce' );
+		$this->method_description = sprintf( __( 'votre paiement en ligne en toute s&eacute;curit&eacute; avec Visa', 'woocommerce' ), admin_url( 'admin.php?page=wc-status' ) );
 		$this->supports           = array(
 			'products',
 			'refunds',
